@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventSetterWPFNative", "Eve
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventWaiterWPFNative", "EventWaiterWPFNative\EventWaiterWPFNative.csproj", "{7C31E3C5-6AA2-489F-89A2-368102033894}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventWaiterWPF", "EventWaiterWPF\EventWaiterWPF.csproj", "{1FA6BA6F-A58F-41DC-AA8F-D46573267FDD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,9 @@ Global
 		{7C31E3C5-6AA2-489F-89A2-368102033894}.Debug|x64.ActiveCfg = Debug|x64
 		{7C31E3C5-6AA2-489F-89A2-368102033894}.Debug|x64.Build.0 = Debug|x64
 		{7C31E3C5-6AA2-489F-89A2-368102033894}.Release|x64.ActiveCfg = Release|x64
+		{1FA6BA6F-A58F-41DC-AA8F-D46573267FDD}.Debug|x64.ActiveCfg = Debug|x64
+		{1FA6BA6F-A58F-41DC-AA8F-D46573267FDD}.Debug|x64.Build.0 = Debug|x64
+		{1FA6BA6F-A58F-41DC-AA8F-D46573267FDD}.Release|x64.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
