@@ -5,11 +5,11 @@ VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared", "Shared\Shared.shproj", "{A93B4A2F-B1D9-45EF-AD9A-5CDFF453A7DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventSetterWPFNative", "EventSetterWPFNative\EventSetterWPFNative.csproj", "{1C36942B-EF72-49B3-A2EE-B7B6A7A8A5F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventSetterWPFNative", "EventSetterWPFNative\EventSetterWPFNative.csproj", "{1C36942B-EF72-49B3-A2EE-B7B6A7A8A5F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventWaiterWPFNative", "EventWaiterWPFNative\EventWaiterWPFNative.csproj", "{7C31E3C5-6AA2-489F-89A2-368102033894}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventWaiterWPFNative", "EventWaiterWPFNative\EventWaiterWPFNative.csproj", "{7C31E3C5-6AA2-489F-89A2-368102033894}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventWaiterWPF", "EventWaiterWPF\EventWaiterWPF.csproj", "{1FA6BA6F-A58F-41DC-AA8F-D46573267FDD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventWaiterWPF", "EventWaiterWPF\EventWaiterWPF.csproj", "{1FA6BA6F-A58F-41DC-AA8F-D46573267FDD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +35,7 @@ Global
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Shared\Shared.projitems*{1c36942b-ef72-49b3-a2ee-b7b6a7a8a5f6}*SharedItemsImports = 5
+		Shared\Shared.projitems*{1fa6ba6f-a58f-41dc-aa8f-d46573267fdd}*SharedItemsImports = 5
 		Shared\Shared.projitems*{7c31e3c5-6aa2-489f-89a2-368102033894}*SharedItemsImports = 5
 		Shared\Shared.projitems*{a93b4a2f-b1d9-45ef-ad9a-5cdff453a7dc}*SharedItemsImports = 13
 	EndGlobalSection
