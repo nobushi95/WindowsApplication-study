@@ -27,7 +27,10 @@ namespace EventWaiterWPF.ViewModels
             };
 
             if (created.Any(x => !x))
+            {
                 Array.ForEach(events, x => x.Dispose());
+                return;
+            }
 
             var isLoop = true;
             while (isLoop)

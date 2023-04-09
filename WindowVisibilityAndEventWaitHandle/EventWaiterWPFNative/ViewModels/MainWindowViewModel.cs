@@ -32,7 +32,6 @@ namespace EventWaiterWPFNative.ViewModels
                 return;
             }
 
-
             var isLoop = true;
             while (isLoop)
             {
@@ -74,12 +73,11 @@ namespace EventWaiterWPFNative.ViewModels
 
             void CloseEventHandles()
             {
-                foreach (var eventHandle in events)
+                events.Where(x => x != IntPtr.Zero).Select(x =>
                 {
-                    if (eventHandle == IntPtr.Zero)
-                        continue;
-                    NativeMethods.CloseHandle(eventHandle);
-                }
+                    NativeMethods.CloseHandle(x);
+                    return true;
+                });
             }
         }
     }
