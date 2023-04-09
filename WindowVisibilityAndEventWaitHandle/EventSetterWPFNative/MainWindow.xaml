@@ -17,6 +17,7 @@
             </StackPanel.Resources>
             <Button Click="ShowButton_Click">Show</Button>
             <Button Click="HideButton_Click">Hide</Button>
+            <Button Click="CloseButton_Click">Close</Button>
         </StackPanel>
     </Grid>
 </Window>

@@ -26,5 +26,12 @@ namespace EventSetterWPFNative
             NativeMethods.SetEvent(handle);
             NativeMethods.CloseHandle(handle);
         }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            var handle = NativeMethods.OpenEvent(NativeMethods.EVENT_MODIFY_STATE, false, EventNames.Close);
+            NativeMethods.SetEvent(handle);
+            NativeMethods.CloseHandle(handle);
+        }
     }
 }
