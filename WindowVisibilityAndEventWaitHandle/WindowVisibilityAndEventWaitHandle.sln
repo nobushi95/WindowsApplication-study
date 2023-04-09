@@ -7,6 +7,8 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared", "Shared\Shared.shp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventSetterWPFNative", "EventSetterWPFNative\EventSetterWPFNative.csproj", "{1C36942B-EF72-49B3-A2EE-B7B6A7A8A5F6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventWaiterWPFNative", "EventWaiterWPFNative\EventWaiterWPFNative.csproj", "{7C31E3C5-6AA2-489F-89A2-368102033894}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -16,6 +18,9 @@ Global
 		{1C36942B-EF72-49B3-A2EE-B7B6A7A8A5F6}.Debug|x64.ActiveCfg = Debug|x64
 		{1C36942B-EF72-49B3-A2EE-B7B6A7A8A5F6}.Debug|x64.Build.0 = Debug|x64
 		{1C36942B-EF72-49B3-A2EE-B7B6A7A8A5F6}.Release|x64.ActiveCfg = Release|x64
+		{7C31E3C5-6AA2-489F-89A2-368102033894}.Debug|x64.ActiveCfg = Debug|x64
+		{7C31E3C5-6AA2-489F-89A2-368102033894}.Debug|x64.Build.0 = Debug|x64
+		{7C31E3C5-6AA2-489F-89A2-368102033894}.Release|x64.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -24,6 +29,7 @@ Global
 		SolutionGuid = {AADFB9E1-A908-489A-8640-E8D62E77C2B2}
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Shared\Shared.projitems*{1c36942b-ef72-49b3-a2ee-b7b6a7a8a5f6}*SharedItemsImports = 5
 		Shared\Shared.projitems*{a93b4a2f-b1d9-45ef-ad9a-5cdff453a7dc}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal
