@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:EventWaiterWPFNative"
         xmlns:vm="clr-namespace:EventWaiterWPFNative.ViewModels"
         mc:Ignorable="d"
-        Visibility="{Binding IsWindowVisible, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}"
+        Visibility="{Binding IsWindowVisible, Converter={StaticResource BooleanToVisibilityConverter}, Mode=TwoWay}"
         Title="MainWindow" Height="200" Width="300">
     <Window.DataContext>
         <vm:MainWindowViewModel/>
