@@ -4,9 +4,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EventWaiterWPFNative"
+        xmlns:vm="clr-namespace:EventWaiterWPFNative.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-
+        Visibility="{Binding IsWindowVisible, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}"
+        Title="MainWindow" Height="200" Width="300">
+    <Window.DataContext>
+        <vm:MainWindowViewModel/>
+    </Window.DataContext>
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+        <TextBlock FontSize="20">
+            <Run Text="{Binding ReceivedEventName, Mode=OneWay}" FontWeight="Bold"/>
+            <Run Text="received."/>
+        </TextBlock>
     </Grid>
 </Window>
