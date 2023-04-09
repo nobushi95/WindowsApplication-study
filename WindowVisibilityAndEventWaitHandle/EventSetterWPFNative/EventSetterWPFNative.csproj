@@ -12,4 +12,6 @@
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
   </PropertyGroup>
 
+  <Import Project="..\Shared\Shared.projitems" Label="Shared" />
+
 </Project>

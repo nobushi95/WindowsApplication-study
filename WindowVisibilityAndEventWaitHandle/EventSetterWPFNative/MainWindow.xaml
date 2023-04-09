@@ -5,8 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EventSetterWPFNative"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="200" Width="300">
     <Grid>
-
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel.Resources>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Width" Value="100"/>
+                    <Setter Property="Margin" Value="5"/>
+                    <Setter Property="FontSize" Value="20"/>
+                </Style>
+            </StackPanel.Resources>
+            <Button Click="ShowButton_Click">Show</Button>
+            <Button Click="HideButton_Click">Hide</Button>
+        </StackPanel>
     </Grid>
 </Window>
