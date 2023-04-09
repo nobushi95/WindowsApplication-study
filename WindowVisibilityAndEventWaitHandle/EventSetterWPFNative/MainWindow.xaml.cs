@@ -15,14 +15,14 @@ namespace EventSetterWPFNative
 
         private void ShowButton_Click(object sender, RoutedEventArgs e)
         {
-            var handle = NativeMethods.OpenEvent(NativeMethods.EVENT_MODIFY_STATE, false, Constatns.ShowEventName);
+            var handle = NativeMethods.OpenEvent(NativeMethods.EVENT_MODIFY_STATE, false, EventNames.Show);
             NativeMethods.SetEvent(handle);
             NativeMethods.CloseHandle(handle);
         }
 
         private void HideButton_Click(object sender, RoutedEventArgs e)
         {
-            var handle = NativeMethods.OpenEvent(NativeMethods.EVENT_MODIFY_STATE, false, Constatns.HideEventName);
+            var handle = NativeMethods.OpenEvent(NativeMethods.EVENT_MODIFY_STATE, false, EventNames.Hide);
             NativeMethods.SetEvent(handle);
             NativeMethods.CloseHandle(handle);
         }
