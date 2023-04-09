@@ -9,6 +9,7 @@
     <Import_RootNamespace>Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Constatns.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NativeMethods.cs" />
   </ItemGroup>
 </Project>
