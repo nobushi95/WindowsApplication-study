@@ -5,7 +5,18 @@ VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared", "Shared\Shared.shproj", "{A93B4A2F-B1D9-45EF-AD9A-5CDFF453A7DC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventSetterWPFNative", "EventSetterWPFNative\EventSetterWPFNative.csproj", "{1C36942B-EF72-49B3-A2EE-B7B6A7A8A5F6}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1C36942B-EF72-49B3-A2EE-B7B6A7A8A5F6}.Debug|x64.ActiveCfg = Debug|x64
+		{1C36942B-EF72-49B3-A2EE-B7B6A7A8A5F6}.Debug|x64.Build.0 = Debug|x64
+		{1C36942B-EF72-49B3-A2EE-B7B6A7A8A5F6}.Release|x64.ActiveCfg = Release|x64
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
