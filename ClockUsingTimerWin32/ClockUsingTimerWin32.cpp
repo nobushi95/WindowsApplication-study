@@ -3,8 +3,11 @@
 
 #include "framework.h"
 #include "ClockUsingTimerWin32.h"
+#include <string>
+#include <format>
 
 #define MAX_LOADSTRING 100
+constexpr int TIMER_ID = 100;
 
 // グローバル変数:
 HINSTANCE hInst;                                // 現在のインターフェイス
@@ -105,8 +108,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
     hInst = hInstance; // グローバル変数にインスタンス ハンドルを格納する
 
-    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-                              CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME & ~WS_MAXIMIZEBOX,
+                              CW_USEDEFAULT, CW_USEDEFAULT, 200, 100, nullptr, nullptr, hInstance, nullptr);
 
     if (!hWnd)
     {
@@ -131,8 +134,27 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    static std::wstring time, date;
     switch (message)
     {
+        case WM_CREATE:
+        {
+            SetTimer(hWnd, TIMER_ID, 500, nullptr);
+            break;
+        }
+        case WM_TIMER:
+        {
+            if (wParam != TIMER_ID)
+                return DefWindowProcW(hWnd, message, wParam, lParam);
+
+            SYSTEMTIME st;
+            GetLocalTime(&st); // 現在時刻を取得
+            time = std::format(L"{:02d}:{:02d}:{:02d}", st.wHour, st.wMinute, st.wSecond);
+            date = std::format(L"{}/{:02d}/{:02d}", st.wYear, st.wMonth, st.wDay);
+
+            InvalidateRect(hWnd, nullptr, TRUE);
+            break;
+        }
         case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);
@@ -154,10 +176,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
-            // TODO: HDC を使用する描画コードをここに追加してください...
+            TextOutW(hdc, 5, 5, date.c_str(), date.length());
+            SetTextColor(hdc, RGB(0, 0, 255));
+            TextOutW(hdc, 10, 20, time.c_str(), time.length());
             EndPaint(hWnd, &ps);
         }
         break;
+        case WM_CLOSE:
+        {
+            KillTimer(hWnd, TIMER_ID);
+            DestroyWindow(hWnd);
+            break;
+        }
         case WM_DESTROY:
             PostQuitMessage(0);
             break;
