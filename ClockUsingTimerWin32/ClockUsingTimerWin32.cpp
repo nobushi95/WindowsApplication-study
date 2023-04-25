@@ -43,12 +43,20 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     MSG msg;
 
     // メイン メッセージ ループ:
-    while (GetMessage(&msg, nullptr, 0, 0))
+    BOOL bRet;
+    while (bRet = GetMessage(&msg, nullptr, 0, 0) != 0)
     {
-        if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+        if (bRet == -1)
         {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
+            break;
+        }
+        else
+        {
+            if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+            {
+                TranslateMessage(&msg);
+                DispatchMessage(&msg);
+            }
         }
     }
 
