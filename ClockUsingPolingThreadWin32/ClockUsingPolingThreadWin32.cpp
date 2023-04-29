@@ -17,8 +17,8 @@ WCHAR szWindowClass[MAX_LOADSTRING];            // メイン ウィンドウ ク
 struct MyThreadArg
 {
     HWND hWnd;
-    HANDLE continueClockEvent;
-    bool isThreadContinue;
+    HANDLE ContinueClockEvent;
+    bool IsThreadContinue;
 };
 
 // このコード モジュールに含まれる関数の宣言を転送します:
@@ -118,8 +118,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     {
         case WM_CREATE:
         {
-            threadArg.continueClockEvent = CreateEventW(nullptr, TRUE, TRUE, SyncClockEventName);
-            threadArg.isThreadContinue = true;
+            threadArg.ContinueClockEvent = CreateEventW(nullptr, TRUE, TRUE, SyncClockEventName);
+            threadArg.IsThreadContinue = true;
             threadArg.hWnd = hWnd;
             threadHandle = CreateThread(nullptr, 0, (LPTHREAD_START_ROUTINE)ThreadFunc, &threadArg, 0, &threadId);
             break;
@@ -148,9 +148,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         case WM_LBUTTONDOWN:
         {
             if (isClockStopped)
-                SetEvent(threadArg.continueClockEvent);
+                SetEvent(threadArg.ContinueClockEvent);
             else
-                ResetEvent(threadArg.continueClockEvent);
+                ResetEvent(threadArg.ContinueClockEvent);
 
             isClockStopped = !isClockStopped;
             break;
@@ -177,13 +177,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             // スレッドを終了
             if (isClockStopped)
-                SetEvent(threadArg.continueClockEvent);
-            threadArg.isThreadContinue = false;
+                SetEvent(threadArg.ContinueClockEvent);
+            threadArg.IsThreadContinue = false;
             WaitForSingleObject(threadHandle, INFINITE);
 
             // ハンドルを閉じる
             CloseHandle(threadHandle);
-            CloseHandle(threadArg.continueClockEvent);
+            CloseHandle(threadArg.ContinueClockEvent);
             PostQuitMessage(0);
             break;
         }
@@ -199,14 +199,14 @@ DWORD WINAPI ThreadFunc(LPVOID threadArg)
     auto hdc = GetDC(lpd->hWnd);
     SetTextColor(hdc, RGB(0, 0, 255));
 
-    while (lpd->isThreadContinue)
+    while (lpd->IsThreadContinue)
     {
         Sleep(100);
         SYSTEMTIME st;
         GetLocalTime(&st);
         auto time = std::format(L"{:02d}:{:02d}:{:02d}", st.wHour, st.wMinute, st.wSecond);
         TextOutW(hdc, 5, 5, time.c_str(), time.length());
-        WaitForSingleObject(lpd->continueClockEvent, INFINITE);
+        WaitForSingleObject(lpd->ContinueClockEvent, INFINITE);
     }
     ReleaseDC(lpd->hWnd, hdc);
     return 0;
