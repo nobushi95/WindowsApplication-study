@@ -17,10 +17,9 @@ WCHAR szWindowClass[MAX_LOADSTRING];            // メイン ウィンドウ ク
 struct MyThreadArg
 {
     HWND hWnd;
+    HANDLE continueClockEvent;
     bool isThreadContinue;
 };
-
-HANDLE g_continueClockEvent;
 
 // このコード モジュールに含まれる関数の宣言を転送します:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -119,7 +118,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     {
         case WM_CREATE:
         {
-            g_continueClockEvent = CreateEventW(nullptr, TRUE, TRUE, SyncClockEventName);
+            threadArg.continueClockEvent = CreateEventW(nullptr, TRUE, TRUE, SyncClockEventName);
             threadArg.isThreadContinue = true;
             threadArg.hWnd = hWnd;
             threadHandle = CreateThread(nullptr, 0, (LPTHREAD_START_ROUTINE)ThreadFunc, &threadArg, 0, &threadId);
@@ -149,9 +148,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         case WM_LBUTTONDOWN:
         {
             if (isClockStopped)
-                SetEvent(g_continueClockEvent);
+                SetEvent(threadArg.continueClockEvent);
             else
-                ResetEvent(g_continueClockEvent);
+                ResetEvent(threadArg.continueClockEvent);
 
             isClockStopped = !isClockStopped;
             break;
@@ -178,13 +177,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             // スレッドを終了
             if (isClockStopped)
-                SetEvent(g_continueClockEvent);
+                SetEvent(threadArg.continueClockEvent);
             threadArg.isThreadContinue = false;
             WaitForSingleObject(threadHandle, INFINITE);
 
             // ハンドルを閉じる
             CloseHandle(threadHandle);
-            CloseHandle(g_continueClockEvent);
+            CloseHandle(threadArg.continueClockEvent);
             PostQuitMessage(0);
             break;
         }
@@ -207,7 +206,7 @@ DWORD WINAPI ThreadFunc(LPVOID threadArg)
         GetLocalTime(&st);
         auto time = std::format(L"{:02d}:{:02d}:{:02d}", st.wHour, st.wMinute, st.wSecond);
         TextOutW(hdc, 5, 5, time.c_str(), time.length());
-        WaitForSingleObject(g_continueClockEvent, INFINITE);
+        WaitForSingleObject(lpd->continueClockEvent, INFINITE);
     }
     ReleaseDC(lpd->hWnd, hdc);
     return 0;
