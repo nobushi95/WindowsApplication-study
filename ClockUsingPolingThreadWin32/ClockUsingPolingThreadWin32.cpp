@@ -1,4 +1,4 @@
-﻿// ClockUsingPolingThreadWin32.cpp : アプリケーションのエントリ ポイントを定義します。
+// ClockUsingPolingThreadWin32.cpp : アプリケーションのエントリ ポイントを定義します。
 //
 
 #include "framework.h"
@@ -65,7 +65,8 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 
     wcex.cbSize = sizeof(WNDCLASSEX);
 
-    wcex.style = CS_HREDRAW | CS_VREDRAW;
+    // ダブルクリックのウィンドウメッセージを受けてとれるようにする
+    wcex.style = CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS;
     wcex.lpfnWndProc = WndProc;
     wcex.cbClsExtra = 0;
     wcex.cbWndExtra = 0;
@@ -84,8 +85,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
     hInst = hInstance; // グローバル変数にインスタンス ハンドルを格納する
 
-    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-                              CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW & ~WS_SYSMENU,
+                              CW_USEDEFAULT, CW_USEDEFAULT, 200, 100, nullptr, nullptr, hInstance, nullptr);
 
     if (!hWnd)
         return FALSE;
@@ -119,6 +120,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 default:
                     return DefWindowProc(hWnd, message, wParam, lParam);
             }
+            break;
+        }
+        case WM_LBUTTONDBLCLK:
+        {
+            DestroyWindow(hWnd);
+            break;
+        }
+        case WM_RBUTTONDBLCLK:
+        {
+            DestroyWindow(hWnd);
             break;
         }
         case WM_PAINT:
