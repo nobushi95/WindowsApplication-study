@@ -1,7 +1,10 @@
 ﻿#include "framework.h"
+#include <shellapi.h>
 #include "NotifyIconWin32.h"
 
 #define MAX_LOADSTRING 100
+constexpr auto MYTRAY_ID = 100;
+constexpr auto WM_MYTRAY = (WM_APP + 0);
 
 // グローバル変数:
 HINSTANCE hInst;                                // 現在のインターフェイス
@@ -97,6 +100,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    static NOTIFYICONDATA ni;
+    static bool isTrayIconExist = false;
     switch (message)
     {
         case WM_RBUTTONDOWN:
@@ -107,6 +112,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             POINT pt = { LOWORD(lParam), HIWORD(lParam) };
             ClientToScreen(hWnd, &pt);
             TrackPopupMenu(subMenu, TPM_LEFTALIGN, pt.x, pt.y, 0, hWnd, nullptr);
+            DestroyMenu(menu);
             break;
         }
         case WM_COMMAND:
@@ -115,11 +121,34 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             // 選択されたメニューの解析:
             switch (wmId)
             {
+                case ID_TRAY_IN:
+                {
+                    // トレイアイコン表示
+                    ni = { 0 };
+                    ni.cbSize = sizeof(NOTIFYICONDATA);
+                    ni.hWnd = hWnd;
+                    ni.uID = MYTRAY_ID;
+                    ni.uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP;
+                    ni.hIcon = (HICON)LoadImageW(hInst, MAKEINTRESOURCEW(IDI_SMALL), IMAGE_ICON, 0, 0, 0);
+                    ni.uCallbackMessage = WM_MYTRAY;
+                    lstrcpyW(ni.szTip, L"MY TASK TRAY");
+                    Shell_NotifyIconW(NIM_ADD, &ni);
+                    isTrayIconExist = true;
+                    break;
+                }
+                case ID_TRAY_OUT:
+                {
+                    // トレイアイコン非表示
+                    Shell_NotifyIconW(NIM_DELETE, &ni);
+                    isTrayIconExist = false;
+                    break;
+                }
                 case IDM_ABOUT:
                 {
                     DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
                     break;
                 }
+                case ID_TRAY_EXIT:
                 case IDM_EXIT:
                 {
                     DestroyWindow(hWnd);
@@ -130,16 +159,33 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             }
             break;
         }
-        case WM_PAINT:
+        case WM_MYTRAY:
         {
-            PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hWnd, &ps);
-            // TODO: HDC を使用する描画コードをここに追加してください...
-            EndPaint(hWnd, &ps);
+            switch (lParam)
+            {
+                case WM_RBUTTONDOWN:
+                {
+                    // 右クリックでトレイアイコンの場所(クリック位置)にポップアップメニューを表示
+                    auto menu = LoadMenuW(hInst, MAKEINTRESOURCEW(IDR_TRAY_MENU));
+                    auto subMenu = GetSubMenu(menu, 0);
+                    POINT pt{ 0 };
+                    GetCursorPos(&pt);
+                    // トレイアイコン以外の場所がクリックされるとメニューをすぐに外すためにWindowを前面に持ってくる
+                    SetForegroundWindow(hWnd);
+                    TrackPopupMenu(subMenu, TPM_LEFTALIGN, pt.x, pt.y, 0, hWnd, nullptr);
+                    DestroyMenu(menu);
+                    break;
+                }
+                default:
+                    return DefWindowProc(hWnd, message, wParam, lParam);
+            }
             break;
         }
         case WM_DESTROY:
         {
+            // トレイアイコンから削除
+            if (isTrayIconExist)
+                Shell_NotifyIconW(NIM_DELETE, &ni);
             PostQuitMessage(0);
             break;
         }
