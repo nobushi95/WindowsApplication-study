@@ -99,6 +99,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
+        case WM_RBUTTONDOWN:
+        {
+            // 右クリックでポップアップメニューを表示するように変更
+            auto menu = LoadMenuW(hInst, MAKEINTRESOURCEW(IDC_NOTIFYICONWIN32));
+            auto subMenu = GetSubMenu(menu, 0);
+            POINT pt = { LOWORD(lParam), HIWORD(lParam) };
+            ClientToScreen(hWnd, &pt);
+            TrackPopupMenu(subMenu, TPM_LEFTALIGN, pt.x, pt.y, 0, hWnd, nullptr);
+            break;
+        }
         case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);
