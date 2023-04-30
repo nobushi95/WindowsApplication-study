@@ -1,7 +1,4 @@
-﻿// NotifyIconWin32.cpp : アプリケーションのエントリ ポイントを定義します。
-//
-
-#include "framework.h"
+﻿#include "framework.h"
 #include "NotifyIconWin32.h"
 
 #define MAX_LOADSTRING 100
@@ -43,25 +40,24 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     MSG msg;
 
     // メイン メッセージ ループ:
-    while (GetMessage(&msg, nullptr, 0, 0))
+    BOOL bRet;
+    while ((bRet = GetMessage(&msg, nullptr, 0, 0) != 0))
     {
-        if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+        if (bRet == -1)
+            break;
+        else
         {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
+            if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+            {
+                TranslateMessage(&msg);
+                DispatchMessage(&msg);
+            }
         }
     }
 
     return (int)msg.wParam;
 }
 
-
-
-//
-//  関数: MyRegisterClass()
-//
-//  目的: ウィンドウ クラスを登録します。
-//
 ATOM MyRegisterClass(HINSTANCE hInstance)
 {
     WNDCLASSEXW wcex;
@@ -83,16 +79,6 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     return RegisterClassExW(&wcex);
 }
 
-//
-//   関数: InitInstance(HINSTANCE, int)
-//
-//   目的: インスタンス ハンドルを保存して、メイン ウィンドウを作成します
-//
-//   コメント:
-//
-//        この関数で、グローバル変数でインスタンス ハンドルを保存し、
-//        メイン プログラム ウィンドウを作成および表示します。
-//
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
     hInst = hInstance; // グローバル変数にインスタンス ハンドルを格納する
@@ -101,9 +87,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
                               CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
 
     if (!hWnd)
-    {
         return FALSE;
-    }
 
     ShowWindow(hWnd, nCmdShow);
     UpdateWindow(hWnd);
@@ -111,16 +95,6 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
     return TRUE;
 }
 
-//
-//  関数: WndProc(HWND, UINT, WPARAM, LPARAM)
-//
-//  目的: メイン ウィンドウのメッセージを処理します。
-//
-//  WM_COMMAND  - アプリケーション メニューの処理
-//  WM_PAINT    - メイン ウィンドウを描画する
-//  WM_DESTROY  - 中止メッセージを表示して戻る
-//
-//
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
@@ -132,34 +106,39 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             switch (wmId)
             {
                 case IDM_ABOUT:
+                {
                     DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
                     break;
+                }
                 case IDM_EXIT:
+                {
                     DestroyWindow(hWnd);
                     break;
+                }
                 default:
                     return DefWindowProc(hWnd, message, wParam, lParam);
             }
+            break;
         }
-        break;
         case WM_PAINT:
         {
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
             // TODO: HDC を使用する描画コードをここに追加してください...
             EndPaint(hWnd, &ps);
+            break;
         }
-        break;
         case WM_DESTROY:
+        {
             PostQuitMessage(0);
             break;
+        }
         default:
             return DefWindowProc(hWnd, message, wParam, lParam);
     }
     return 0;
 }
 
-// バージョン情報ボックスのメッセージ ハンドラーです。
 INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
     UNREFERENCED_PARAMETER(lParam);
@@ -169,12 +148,14 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
             return (INT_PTR)TRUE;
 
         case WM_COMMAND:
+        {
             if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
             {
                 EndDialog(hDlg, LOWORD(wParam));
                 return (INT_PTR)TRUE;
             }
             break;
+        }
     }
     return (INT_PTR)FALSE;
 }
